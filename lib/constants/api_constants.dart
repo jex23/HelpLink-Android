@@ -3,6 +3,8 @@ class ApiConstants {
   // For Android Emulator: use 10.0.2.2
   // For Physical Device: use your computer's IP address (e.g., 192.168.100.2)
   static const String baseUrl = 'http://10.0.2.2:5001';
+  //static const String baseUrl = 'https://jamesgalos.shop';
+
 
   // Auth endpoints
   static const String registerEndpoint = '/api/auth/register';
@@ -11,6 +13,9 @@ class ApiConstants {
   static const String fileUrlEndpoint = '/api/auth/file-url';
   static const String changePasswordEndpoint = '/api/auth/change-password';
   static const String profileEndpoint = '/api/auth/profile';
+  static const String forgotPasswordEndpoint = '/api/auth/forgot-password';
+  static const String verifyOtpEndpoint = '/api/auth/verify-otp';
+  static const String resetPasswordEndpoint = '/api/auth/reset-password';
 
   // Credentials endpoints
   static const String credentialsEndpoint = '/api/credentials';
@@ -34,6 +39,9 @@ class ApiConstants {
   static String fileUrl(String path) => '$baseUrl$fileUrlEndpoint/$path';
   static String get changePasswordUrl => '$baseUrl$changePasswordEndpoint';
   static String get profileUrl => '$baseUrl$profileEndpoint';
+  static String get forgotPasswordUrl => '$baseUrl$forgotPasswordEndpoint';
+  static String get verifyOtpUrl => '$baseUrl$verifyOtpEndpoint';
+  static String get resetPasswordUrl => '$baseUrl$resetPasswordEndpoint';
   static String get credentialsUrl => '$baseUrl$credentialsEndpoint';
   static String get idsUrl => '$baseUrl$idsEndpoint';
   static String get profileImageUrl => '$baseUrl$profileImageEndpoint';

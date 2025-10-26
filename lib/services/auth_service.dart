@@ -272,4 +272,133 @@ class AuthService {
       return null;
     }
   }
+
+  // Request password reset OTP
+  Future<Map<String, dynamic>> forgotPassword(String email) async {
+    try {
+      print('=== FORGOT PASSWORD DEBUG START ===');
+      print('Forgot Password URL: ${ApiConstants.forgotPasswordUrl}');
+      print('Email: $email');
+
+      var response = await http.post(
+        Uri.parse(ApiConstants.forgotPasswordUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'email': email}),
+      );
+
+      print('Response status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        print('Forgot password request successful!');
+        var jsonResponse = json.decode(response.body);
+        print('=== FORGOT PASSWORD DEBUG END ===');
+        return jsonResponse;
+      } else {
+        print('Forgot password failed with status: ${response.statusCode}');
+        var errorData = json.decode(response.body);
+        print('Error data: $errorData');
+        throw Exception(errorData['error'] ?? 'Failed to send OTP');
+      }
+    } on SocketException catch (e) {
+      print('SocketException: $e');
+      throw Exception('No internet connection. Please check your network.');
+    } on HttpException catch (e) {
+      print('HttpException: $e');
+      throw Exception('Server error. Please try again later.');
+    } catch (e) {
+      print('Unexpected error: $e');
+      throw Exception('Failed to send OTP: ${e.toString()}');
+    }
+  }
+
+  // Verify OTP code
+  Future<Map<String, dynamic>> verifyOtp(String email, String otpCode) async {
+    try {
+      print('=== VERIFY OTP DEBUG START ===');
+      print('Verify OTP URL: ${ApiConstants.verifyOtpUrl}');
+      print('Email: $email, OTP: $otpCode');
+
+      var response = await http.post(
+        Uri.parse(ApiConstants.verifyOtpUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'email': email,
+          'otp_code': otpCode,
+          'otp_type': 'password_reset',
+        }),
+      );
+
+      print('Response status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        print('OTP verification successful!');
+        var jsonResponse = json.decode(response.body);
+        print('=== VERIFY OTP DEBUG END ===');
+        return jsonResponse;
+      } else {
+        print('OTP verification failed with status: ${response.statusCode}');
+        var errorData = json.decode(response.body);
+        print('Error data: $errorData');
+        throw Exception(errorData['error'] ?? 'Invalid OTP code');
+      }
+    } on SocketException catch (e) {
+      print('SocketException: $e');
+      throw Exception('No internet connection. Please check your network.');
+    } on HttpException catch (e) {
+      print('HttpException: $e');
+      throw Exception('Server error. Please try again later.');
+    } catch (e) {
+      print('Unexpected error: $e');
+      throw Exception('Failed to verify OTP: ${e.toString()}');
+    }
+  }
+
+  // Reset password
+  Future<Map<String, dynamic>> resetPassword(
+    String email,
+    String otpCode,
+    String newPassword,
+  ) async {
+    try {
+      print('=== RESET PASSWORD DEBUG START ===');
+      print('Reset Password URL: ${ApiConstants.resetPasswordUrl}');
+      print('Email: $email');
+
+      var response = await http.post(
+        Uri.parse(ApiConstants.resetPasswordUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'email': email,
+          'otp_code': otpCode,
+          'new_password': newPassword,
+        }),
+      );
+
+      print('Response status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        print('Password reset successful!');
+        var jsonResponse = json.decode(response.body);
+        print('=== RESET PASSWORD DEBUG END ===');
+        return jsonResponse;
+      } else {
+        print('Password reset failed with status: ${response.statusCode}');
+        var errorData = json.decode(response.body);
+        print('Error data: $errorData');
+        throw Exception(errorData['error'] ?? 'Failed to reset password');
+      }
+    } on SocketException catch (e) {
+      print('SocketException: $e');
+      throw Exception('No internet connection. Please check your network.');
+    } on HttpException catch (e) {
+      print('HttpException: $e');
+      throw Exception('Server error. Please try again later.');
+    } catch (e) {
+      print('Unexpected error: $e');
+      throw Exception('Failed to reset password: ${e.toString()}');
+    }
+  }
 }
